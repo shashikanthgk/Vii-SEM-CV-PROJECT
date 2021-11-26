@@ -1,0 +1,3 @@
+tversky_loss.pth 0.8100943446159362
+bce_loss.pth 0.7822812020778657
+log_cos_dice_loss.pth 0.800871968269348
