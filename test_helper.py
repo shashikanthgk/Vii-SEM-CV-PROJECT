@@ -188,8 +188,6 @@ def save_prediction(name,model_file,x_test_dir,y_test_dir,preprocessing_fn,selec
     np.save(name+"_targets_"+".npy",targets)
   
 
-
-
 def ensemble_result(model_file1,model_file2,x_test_dir,y_test_dir,preprocessing_fn,select_class_rgb_values,loss,metric):
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if os.path.exists(model_file1):
@@ -241,12 +239,4 @@ def ensemble_result(model_file1,model_file2,x_test_dir,y_test_dir,preprocessing_
               accuracy += 1
         total_accuracy += (accuracy/(len(final_mask)*(len(final_mask[0]))))
 
-
-def ensemble_result_(prediction_target_file,model):
-    prediction_target = np.load(prediction_target_file)
-    for i in range(len(prediction_target)):
-        print(prediction_target[i][0].shape)
-        print(prediction_target[i][1].shape)
-        print(prediction_target[i][2].shape)
-        print("---------------->")
 

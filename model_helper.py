@@ -163,32 +163,32 @@ def save_prediction(model_file1,model_file2,x_train_dir, y_train_dir,preprocessi
         predictions.append([pred_mask1,pred_mask2,gt_mask])
     np.save(name+"_predictions_targets_train.npy",predictions)
 
-def save_prediction(model_file1,model_file2,x_train_dir, y_train_dir,preprocessing_fn1,preprocessing_fn2,select_class_rgb_values,name):
-    DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    if os.path.exists(model_file1):
-        model1 = torch.load(model_file1, map_location = DEVICE)
-        model2 = torch.load(model_file2, map_location = DEVICE)
-        print('Loaded UNet model from this run.')
-    else:
-        print("Model file can not be found !")
-        return 
-    predictions = []
-    image_paths = [os.path.join(x_train_dir, image_id) for image_id in sorted(os.listdir(x_train_dir))]
-    mask_paths = [os.path.join(y_train_dir, image_id) for image_id in sorted(os.listdir(y_train_dir))]
-    for image_path,mask_path in zip(image_paths,mask_paths):
-        image1,mask1 = get_item(select_class_rgb_values,image_path,mask_path,preprocessing_fn1)
-        image2,mask2 = get_item(select_class_rgb_values,image_path,mask_path,preprocessing_fn2)
-        if(not np.array_equal(mask1,mask2)):
-          continue
-        # print("Hello")
-        x_tensor1 = torch.from_numpy(image1).to(DEVICE).unsqueeze(0)
-        x_tensor2 = torch.from_numpy(image2).to(DEVICE).unsqueeze(0)
-        pred_mask1 = model1(x_tensor1)
-        pred_mask2 = model2(x_tensor2)
-        pred_mask1 = pred_mask1.detach().squeeze().cpu().numpy()
-        pred_mask1 = np.transpose(pred_mask1, (1, 2, 0))
-        pred_mask2 = pred_mask2.detach().squeeze().cpu().numpy()
-        pred_mask2 = np.transpose(pred_mask2, (1, 2, 0))
-        gt_mask = np.transpose(mask1, (1, 2, 0))
-        predictions.append([pred_mask1,pred_mask2,gt_mask])
-    np.save(name+"_predictions_targets_train.npy",predictions)
+# def save_prediction(model_file1,model_file2,x_train_dir, y_train_dir,preprocessing_fn1,preprocessing_fn2,select_class_rgb_values,name):
+#     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#     if os.path.exists(model_file1):
+#         model1 = torch.load(model_file1, map_location = DEVICE)
+#         model2 = torch.load(model_file2, map_location = DEVICE)
+#         print('Loaded UNet model from this run.')
+#     else:
+#         print("Model file can not be found !")
+#         return 
+#     predictions = []
+#     image_paths = [os.path.join(x_train_dir, image_id) for image_id in sorted(os.listdir(x_train_dir))]
+#     mask_paths = [os.path.join(y_train_dir, image_id) for image_id in sorted(os.listdir(y_train_dir))]
+#     for image_path,mask_path in zip(image_paths,mask_paths):
+#         image1,mask1 = get_item(select_class_rgb_values,image_path,mask_path,preprocessing_fn1)
+#         image2,mask2 = get_item(select_class_rgb_values,image_path,mask_path,preprocessing_fn2)
+#         if(not np.array_equal(mask1,mask2)):
+#           continue
+#         # print("Hello")
+#         x_tensor1 = torch.from_numpy(image1).to(DEVICE).unsqueeze(0)
+#         x_tensor2 = torch.from_numpy(image2).to(DEVICE).unsqueeze(0)
+#         pred_mask1 = model1(x_tensor1)
+#         pred_mask2 = model2(x_tensor2)
+#         pred_mask1 = pred_mask1.detach().squeeze().cpu().numpy()
+#         pred_mask1 = np.transpose(pred_mask1, (1, 2, 0))
+#         pred_mask2 = pred_mask2.detach().squeeze().cpu().numpy()
+#         pred_mask2 = np.transpose(pred_mask2, (1, 2, 0))
+#         gt_mask = np.transpose(mask1, (1, 2, 0))
+#         predictions.append([pred_mask1,pred_mask2,gt_mask])
+#     np.save(name+"_predictions_targets_train.npy",predictions)
