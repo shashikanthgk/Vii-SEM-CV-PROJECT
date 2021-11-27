@@ -4,16 +4,7 @@ import cv2
 from preprocess import one_hot_encode 
 import albumentations as album
 class BuildingsDataset(torch.utils.data.Dataset):
-    """
-    Massachusetts Buildings Dataset. Read images, apply augmentation and preprocessing transformations.
-    
-    Arguments:
-        images_dir (str) : path to images folder
-        masks_dir (str) : path to segmentation masks folder
-        class_rgb_values (list) : RGB values of select classes to extract from segmentation mask 
-        augmentation (albumentations.Compose) : data transfromation pipeline (e.g. flip, scale, etc.)
-        preprocessing (albumentations.Compose) : data preprocessing (e.g. noralization, shape manipulation, etc.)
-    """
+
     
     def __init__(
             self, 
@@ -80,14 +71,6 @@ def get_validation_augmentation():
 def to_tensor(x, **kwargs):
     return x.transpose(2, 0, 1).astype('float32')
 def get_preprocessing(preprocessing_fn=None):
-    """
-    Construct preprocessing transform    
-    
-    Arguments:
-        preprocessing_fn (callable): data normalization function (can be specific for each pretrained neural network)
-    Returns:
-        transform: albumentations.Compose
-    """   
     _transform = []
     if preprocessing_fn:
         _transform.append(album.Lambda(image = preprocessing_fn))

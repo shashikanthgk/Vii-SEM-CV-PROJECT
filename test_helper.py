@@ -38,23 +38,6 @@ def test(x_test_dir,y_test_dir,preprocessing_fn,select_class_rgb_values,predicti
         class_rgb_values = select_class_rgb_values,
     )
     test_dataloader = DataLoader(test_dataset)
-    # test_dataset_vis = ds.BuildingsDataset(
-    #                                     x_test_dir, y_test_dir, 
-    #                                     augmentation = ds.get_validation_augmentation(),
-    #                                     class_rgb_values = select_class_rgb_values,
-    #                                     )
-    # Get a random test image / mask index
-    # random_idx = random.randint(0, len(test_dataset_vis) - 1)
-    # image, mask = test_dataset_vis[random_idx]
-
-    # pp.visualize(
-    #     original_image = image,
-    #     ground_truth_mask = pp.colour_code_segmentation(pp.reverse_one_hot(mask), select_class_rgb_values),
-    #     one_hot_encoded_mask = pp.reverse_one_hot(mask)
-    # )
-    # sample_preds_folder = prediction_dir+"/"
-    # if not os.path.exists(sample_preds_folder):
-    #     os.makedirs(sample_preds_folder)
     total_accuracy = 0
     for idx in range(len(test_dataset)):
 
@@ -87,26 +70,7 @@ def test(x_test_dir,y_test_dir,preprocessing_fn,select_class_rgb_values,predicti
         total_accuracy += (accuracy/(len(pred_mask)*(len(pred_mask[0]))))
 
     accuracy = total_accuracy/(len(test_dataset))
-        # gt_mask = crop_image(pp.colour_code_segmentation(pp.reverse_one_hot(gt_mask), select_class_rgb_values))
-        # cv2.imwrite(os.path.join(sample_preds_folder, sample_preds_folder+"_{idx}.png"), np.hstack([image_vis, gt_mask, pred_mask])[:,:,::-1])
-        
-        # pp.visualize(
-        #     original_image = image_vis,
-        #     ground_truth_mask = gt_mask,
-        #     predicted_mask = pred_mask,
-        #     predicted_building_heatmap = pred_building_heatmap
-        # )
-        # intersection = np.logical_and(gt_mask, pred_mask)
-        # union = np.logical_or(gt_mask, pred_mask)
-        # iou_score = np.sum(intersection) / np.sum(union)
-        # iouscores += iou_score
 
-    # print("Mean IoU Score: "+str(iouscores/len(test_dataset)))
-    # f = open('./RESULT/TEST/loss_iou.txt','a')
-
-    # f.write(model_file+" "+str(iouscores/len(test_dataset)))
-    # f.write("\n")
-    # f.close()
 
 
     test_epoch = smp.utils.train.ValidEpoch(
